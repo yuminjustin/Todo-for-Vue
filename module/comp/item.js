@@ -2,20 +2,21 @@ define(function (require, exports, module) {
 	var Vue = require("vue");
 
 	Vue.component('todo-item', {
-		props: ['todo', "idx", "filter",'ipt'],
+		props: ['todo', "idx", "filter"],
 		template: '<li v-show="isShow()" :class="todo.selected?\'selected\' : \'\'">\
 		           <input ref="cbox" type="checkbox" class="l db" @click="selectIt(idx)" :checked="todo.selected?true:false">\
 		           <span class="db l ellipsis" v-show="!isEdit" @dblclick="editIt">{{todo.value}}</span>\
 				   <input v-model="ipt" type="text" class="l db" v-show="isEdit" :placeholder="todo.value">\
 				   <div class="operate r">\
-				       <button style="margin-right: 8px;" @click="delIt(idx)">删除</button>\
+				       <button v-show="!isEdit" style="margin-right: 8px;" @click="delIt(idx)">删除</button>\
 				       <button v-show="isEdit" style="margin-right: 8px;" @click="updateIt(idx)">修改</button>\
 				       <button v-show="isEdit" @click="cancelIt">取消</button>\
 			       </div>\
                 </li>',
 		data: function () {
 			return {
-				isEdit: 0
+				isEdit: 0,
+				ipt:""
 			}
 		},
 		methods: {
