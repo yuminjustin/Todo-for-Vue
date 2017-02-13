@@ -2,11 +2,11 @@ define(function (require, exports, module) {
 	var Vue = require("vue");
 
 	Vue.component('todo-item', {
-		props: ['todo', "idx", "filter"],
+		props: ['todo', "idx", "filter",'ipt'],
 		template: '<li v-show="isShow()" :class="todo.selected?\'selected\' : \'\'">\
 		           <input ref="cbox" type="checkbox" class="l db" @click="selectIt(idx)" :checked="todo.selected?true:false">\
 		           <span class="db l ellipsis" v-show="!isEdit" @dblclick="editIt">{{todo.value}}</span>\
-				   <input ref="ipt" type="text" class="l db" v-show="isEdit" :placeholder="todo.value">\
+				   <input v-model="ipt" type="text" class="l db" v-show="isEdit" :placeholder="todo.value">\
 				   <div class="operate r">\
 				       <button style="margin-right: 8px;" @click="delIt(idx)">删除</button>\
 				       <button v-show="isEdit" style="margin-right: 8px;" @click="updateIt(idx)">修改</button>\
@@ -26,13 +26,13 @@ define(function (require, exports, module) {
 				this.$emit("delIt", idx);
 			},
 			updateIt: function (idx) {
-				this.$refs.ipt.value && this.$emit("updateIt", this.$refs.ipt.value, idx);
-				this.$refs.ipt.value = "";
+				this.ipt && this.$emit("updateIt", this.ipt, idx);
+				this.ipt = "";
 				this.isEdit = 0;
 			},
 			cancelIt: function () {
 				this.isEdit = 0;
-				this.$refs.ipt.value = "";
+				this.ipt = "";
 			},
 			selectIt: function (idx) {
 				this.$emit("selectIt", idx, this.$refs.cbox.checked);
@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 						break;
 				}
 				return s;
-			}	
+			}
 		}
 	})
 });
